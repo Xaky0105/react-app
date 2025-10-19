@@ -4,3 +4,6 @@ services:
     build: .
     ports:
       - "8080:80"
+    # НЕ монтируем локальную dist! Иначе перезапишется сборка
+    # volumes:
+    #   - ./dist:/usr/share/nginx/html
