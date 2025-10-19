@@ -2,9 +2,9 @@
 FROM node:20-alpine AS build
 WORKDIR /app
 COPY package*.json ./
-RUN npm ci
+RUN yarn install
 COPY . .
-RUN npm run build
+RUN yarn build
 
 # --- 2. Nginx для раздачи сборки ---
 FROM nginx:stable-alpine
