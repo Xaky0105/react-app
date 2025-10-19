@@ -8,6 +8,16 @@ RUN yarn install
 COPY . .
 RUN yarn build
 
+# Устанавливаем утилиты для сжатия
+RUN apk add --no-cache gzip brotli
+
+# Сжимаем файлы в dist/
+# - gzip: максимальное сжатие (-9), создаёт .gz рядом с файлами
+# - brotli: максимальное сжатие (-Z), создаёт .br рядом с файлами
+RUN find dist -type f -regex ".*\.\(js\|css\|html\|svg\|json\)" -exec gzip -9 -k {} \;
+RUN find dist -type f -regex ".*\.\(js\|css\|html\|svg\|json\)" -exec brotli -Z {} \;
+
+
 # --- 2. Nginx для раздачи сборки ---
 FROM nginx:stable-alpine
 
