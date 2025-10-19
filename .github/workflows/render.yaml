@@ -1,0 +1,24 @@
+name: CI/CD Render
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t my-app .
+
+      - name: Login to Render
+        env:
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+        run: |
+          curl -X POST https://api.render.com/deploy/srv-xxxxxxxxxxxxxxxxxxxx \
+          -H "Authorization: Bearer $RENDER_API_KEY" \
+          -H "Accept: application/json"
